@@ -118,4 +118,4 @@ All code of HOMIE is under the <a rel="license" href="http://creativecommons.org
 - [HIMLoco](https://github.com/OpenRobotLab/HIMLoco): We use `HIMLoco` library as our codebase.
 - [Walk-These-Ways](https://github.com/leggedrobotics/rsl_rl): Our robot deployment code is based on `walk-these-ways`.
 - [Unitree SDK2](https://github.com/leggedrobotics/rsl_rl): We use `Unitree SDK2` library to control the robot.
-- [HumanCulus](https://github.com/nepyope/Project-Homunculus): Our glove design refers to the principle of `HumanCulus` such as using `Hall sensors`.
+- [HomunCulus](https://github.com/nepyope/Project-Homunculus): Our glove design refers to the principle of `HomunCulus` such as using `Hall sensors`.

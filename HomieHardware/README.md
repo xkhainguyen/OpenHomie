@@ -46,4 +46,4 @@ All resources of HOMIE is under the <a rel="license" href="http://creativecommon
 
 ## 👏 Acknowledgements
 
-- [HumanCulus](https://github.com/nepyope/Project-Homunculus): Our glove design refers to the principle of `HumanCulus` such as using `Hall sensors`.
+- [HomunCulus](https://github.com/nepyope/Project-Homunculus): Our glove design refers to the principle of `HomunCulus` such as using `Hall sensors`.
