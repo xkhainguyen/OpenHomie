@@ -30,11 +30,11 @@ Please fill in the form [here](https://docs.google.com/forms/d/e/1FAIpQLSeETDUR9
 If you find our work helpful, please cite:
 
 ```bibtex
-@article{ben2024homie,
-    title={HOMIE: Humanoid Loco-Manipulation with Isomorphic Exoskeleton Cockpit},
-    author={Qingwei Ben, Feiyu Jia, Jia Zeng, Junting Dong, Dahua Lin, Jiangmiao Pang},
-    journal={arXiv preprint arXiv:2502.13013},
-    year={2025}
+@article{ben2025homie,
+  title={HOMIE: Humanoid Loco-Manipulation with Isomorphic Exoskeleton Cockpit},
+  author={Ben, Qingwei and Jia, Feiyu and Zeng, Jia and Dong, Junting and Lin, Dahua and Pang, Jiangmiao},
+  journal={arXiv preprint arXiv:2502.13013},
+  year={2025}
 }
 ```
 
