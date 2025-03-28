@@ -101,16 +101,18 @@ class HIMRolloutStorage:
         self.step = 0
 
     def compute_returns(self, last_values, gamma, lam):
+        num_transitions_per_env = self.num_transitions_per_env // 2
         advantage = 0
-        for step in reversed(range(self.num_transitions_per_env)):
-            if step == self.num_transitions_per_env - 1:
+        resize = lambda x: x.view(num_transitions_per_env, 2, -1, 1)
+        for step in reversed(range(num_transitions_per_env)):
+            if step == num_transitions_per_env - 1:
                 next_values = last_values
             else:
-                next_values = self.values[step + 1]
-            next_is_not_terminal = 1.0 - self.dones[step].float()
-            delta = self.rewards[step] + next_is_not_terminal * gamma * next_values - self.values[step]
+                next_values = resize(self.values)[step + 1]
+            next_is_not_terminal = 1.0 - resize(self.dones)[step].float()
+            delta = resize(self.rewards)[step] + next_is_not_terminal * gamma * next_values - resize(self.values)[step]
             advantage = delta + next_is_not_terminal * gamma * lam * advantage
-            self.returns[step] = advantage + self.values[step]
+            resize(self.returns)[step] = advantage + resize(self.values)[step]
         # Compute and normalize the advantages
         self.advantages = self.returns - self.values
         self.advantages = (self.advantages - self.advantages.mean()) / (self.advantages.std() + 1e-8)
