@@ -84,7 +84,8 @@ Then you can follow the README.md in each sub-repostory to install all three par
 
 If you have any questions about the usage of this repository, please feel free to drop an e-mail at **elgceben@gmail.com**, we will respond to it as soon as possible. Or, you can join our discussion wechat group:
 
-![image](https://github.com/user-attachments/assets/21a90079-211a-4ac6-9f0b-685505cbdfc7)
+![image](https://github.com/user-attachments/assets/032f7f5f-cc1c-4e15-b5da-c93afd54a1e2)
+
 
 
 ## 🔗 Citation
