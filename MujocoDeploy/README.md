@@ -3,6 +3,12 @@
 
 Run Sim2Sim in the Mujoco simulator:
 
+## Installation
+
+First install MuJoCo:
+```bash
+pip install mujoco==3.2.3
+```
 
 #### Parameter Description
 - `config_name`: Configuration file; default search path is `MujocoDeploy/g1.yaml`.
