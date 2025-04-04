@@ -18,7 +18,7 @@ pip install mujoco==3.2.3
 
 ```bash
 cd ~/OpenHomie/MujocoDeploy
-python python mujoco_deploy_g1.py 
+python mujoco_deploy_g1.py 
 ```
 
 #### Replace Network Model
