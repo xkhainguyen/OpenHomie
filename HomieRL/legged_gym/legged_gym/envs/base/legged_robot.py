@@ -884,9 +884,10 @@ class LeggedRobot(BaseTask):
         if self.cfg.domain_rand.randomize_body_displacement:
             self.body_displacement = torch_rand_float(self.cfg.domain_rand.body_displacement_range[0], self.cfg.domain_rand.body_displacement_range[1], (self.num_envs, 3), device=self.device)
         
-        self.torso_body_index = self.body_names.index("torso_link")
-        self.left_hand_index = self.body_names.index("left_hand_palm_link")
-        self.right_hand_index = self.body_names.index("right_hand_palm_link")    
+        # import ipdb; ipdb.set_trace()
+        self.torso_body_index = self.body_names.index(self.cfg.asset.upper_body_link)
+        self.left_hand_index = self.body_names.index(self.cfg.asset.hand_names[0]) 
+        self.right_hand_index = self.body_names.index(self.cfg.asset.hand_names[1])    
         for i in range(self.num_envs):
             # create env instance
             env_handle = self.gym.create_env(self.sim, env_lower, env_upper, int(np.sqrt(self.num_envs)))

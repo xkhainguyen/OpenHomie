@@ -31,25 +31,23 @@
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
 import numpy as np
 
-class G1RoughCfg( LeggedRobotCfg ):
+class H12RoughCfg( LeggedRobotCfg ):
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.75] # x,y,z [m]
+        pos = [0.0, 0.0, 1.05] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
             'left_hip_yaw_joint' : 0. ,   
            'left_hip_roll_joint' : 0,               
-           'left_hip_pitch_joint' : -0.1,         
-           'left_knee_joint' : 0.3,       
+           'left_hip_pitch_joint' : -0.16,         
+           'left_knee_joint' : 0.36,       
            'left_ankle_pitch_joint' : -0.2,     
            'left_ankle_roll_joint' : 0,     
            'right_hip_yaw_joint' : 0., 
            'right_hip_roll_joint' : 0, 
-           'right_hip_pitch_joint' : -0.1,                                       
-           'right_knee_joint' : 0.3,                                             
+           'right_hip_pitch_joint' : -0.16,                                       
+           'right_knee_joint' : 0.36,                                             
            'right_ankle_pitch_joint': -0.2,                              
            'right_ankle_roll_joint' : 0,         
-            "waist_yaw_joint":0.,
-            "waist_roll_joint": 0.,
-            "waist_pitch_joint": 0.,
+            "torso_joint":0.,
             "left_shoulder_pitch_joint": 0.,
             "left_shoulder_roll_joint": 0.,
             "left_shoulder_yaw_joint": 0.,
@@ -57,13 +55,6 @@ class G1RoughCfg( LeggedRobotCfg ):
             "left_wrist_roll_joint": 0.,
             "left_wrist_pitch_joint": 0.,
             "left_wrist_yaw_joint": 0.,
-            "left_hand_index_0_joint": 0.,
-            "left_hand_index_1_joint": 0.,
-            "left_hand_middle_0_joint": 0.,
-            "left_hand_middle_1_joint": 0.,
-            "left_hand_thumb_0_joint": 0.,
-            "left_hand_thumb_1_joint": 0.,
-            "left_hand_thumb_2_joint": 0.,
             "right_shoulder_pitch_joint": 0.,
             "right_shoulder_roll_joint": -0.,#-0.3
             "right_shoulder_yaw_joint": 0.,
@@ -71,43 +62,31 @@ class G1RoughCfg( LeggedRobotCfg ):
             "right_wrist_roll_joint": 0.,
             "right_wrist_pitch_joint": 0.,
             "right_wrist_yaw_joint": 0.,
-            "right_hand_index_0_joint": 0.,
-            "right_hand_index_1_joint": 0.,
-            "right_hand_middle_0_joint": 0.,
-            "right_hand_middle_1_joint": 0.,
-            "right_hand_thumb_0_joint": 0.,
-            "right_hand_thumb_1_joint": 0.,
-            "right_hand_thumb_2_joint": 0.,
-           
         }
 
     class control( LeggedRobotCfg.control ):
         # PD Drive parameters:
         control_type = 'M'
           # PD Drive parameters:
-        stiffness = {'hip_yaw': 100,
-                     'hip_roll': 100,
-                     'hip_pitch': 100,
-                     'knee': 150,
+        stiffness = {'hip_yaw': 200,
+                     'hip_roll': 200,
+                     'hip_pitch': 200,
+                     'knee': 300,
                      'ankle': 40,
-                     
                      "waist": 300,
                      "shoulder": 200,
                      "wrist": 20,
                      "elbow": 100,
-                     "hand": 10
-                    
                      }  # [N*m/rad]
-        damping = {  'hip_yaw': 2,
-                     'hip_roll': 2,
-                     'hip_pitch': 2,
+        damping = {  'hip_yaw': 2.5,
+                     'hip_roll': 2.5,
+                     'hip_pitch': 2.5,
                      'knee': 4,
                      'ankle': 2,
                      "waist": 5,
                      "shoulder": 4,
                      "wrist": 0.5,
                      "elbow": 1,
-                     "hand": 2
                      }  # [N*m/rad]  # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
@@ -130,8 +109,8 @@ class G1RoughCfg( LeggedRobotCfg ):
             height = [-0.5, 0.0]
 
     class asset( LeggedRobotCfg.asset ):
-        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/g1_description/g1.urdf'
-        name = "g1"
+        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2_description/h1_2.urdf'
+        name = "h1_2"
         foot_name = "ankle_roll"
         left_foot_name = "left_foot"
         right_foot_name = "right_foot"
@@ -146,9 +125,9 @@ class G1RoughCfg( LeggedRobotCfg ):
         knee_joints = ['left_knee_joint', 'right_knee_joint']
         ankle_joints = ["left_ankle_roll_joint", "right_ankle_roll_joint"]
         upper_body_link = "torso_link"
-        imu_link = "imu_in_pelvis"
+        imu_link = "imu"
         knee_names = ["left_knee_link", "left_hip_yaw_link", "right_knee_link", "right_hip_yaw_link"]
-        hand_names = ["left_hand_palm_link", "right_hand_palm_link"]
+        hand_names = ["L_hand_base_link", "R_hand_base_link"]
         self_collision = 1
         flip_visual_attachments = False
         ankle_sole_distance = 0.02
@@ -242,7 +221,7 @@ class G1RoughCfg( LeggedRobotCfg ):
         soft_dof_pos_limit = 0.975
         soft_dof_vel_limit = 0.80
         soft_torque_limit = 0.95
-        base_height_target = 0.74
+        base_height_target = 1.02
         max_contact_force = 400.
         least_feet_distance = 0.2
         least_feet_distance_lateral = 0.2
@@ -280,7 +259,7 @@ class G1RoughCfg( LeggedRobotCfg ):
             gravity = 0.05
             height_measurement = 0.1
 
-class G1RoughCfgPPO( LeggedRobotCfgPPO ):
+class H12RoughCfgPPO( LeggedRobotCfgPPO ):
     class algorithm( LeggedRobotCfgPPO.algorithm ):
         use_flip = True
         entropy_coef = 0.01
