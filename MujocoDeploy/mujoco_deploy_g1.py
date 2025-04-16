@@ -7,6 +7,7 @@ import numpy as np
 import mujoco
 import mujoco.viewer
 from legged_gym import LEGGED_GYM_ROOT_DIR
+from remote_controller import KeyListener
 
 def load_config(config_path):
     """Load and process the YAML configuration file"""
@@ -92,6 +93,38 @@ def compute_observation(d, config, action, cmd, height_cmd, n_joints):
     
     return single_obs, single_obs_dim
 
+def handle_key_cmd(key_listener, cmd, height_cmd):   
+    new_cmd = cmd.copy()
+    new_height_cmd = height_cmd
+    if (key_listener.is_pressed('w')):
+        new_cmd[0] = cmd[0] + 0.1
+        print("[MODE] New command: ", cmd)
+    if (key_listener.is_pressed('s')):
+        new_cmd[0] = cmd[0] - 0.1
+        print("[MODE] New command: ", cmd)
+    if (key_listener.is_pressed('a')):
+        new_cmd[1] = cmd[1] + 0.1   
+        print("[MODE] New command: ", cmd)
+    if (key_listener.is_pressed('d')):
+        new_cmd[1] = cmd[1] - 0.1
+        print("[MODE] New command: ", cmd)
+    if (key_listener.is_pressed('q')):
+        new_cmd[2] = cmd[2] + 0.1   
+        print("[MODE] New command: ", cmd)
+    if (key_listener.is_pressed('e')):
+        new_cmd[2] = cmd[2] - 0.1   
+        print("[MODE] New command: ", cmd)
+    if (key_listener.is_pressed('r')):
+        new_cmd = cmd * 0.0
+        print("[MODE] New command: ", cmd)
+    if (key_listener.is_pressed('z')):
+        new_height_cmd = height_cmd + 0.1
+        print("[MODE] New command: ", cmd)
+    if (key_listener.is_pressed('x')):
+        new_height_cmd = height_cmd - 0.1
+        print("[MODE] New command: ", cmd)
+    return new_cmd, new_height_cmd
+
 def main():
     # Load configuration
     config = load_config("g1.yaml")
@@ -110,6 +143,7 @@ def main():
     target_dof_pos = config['default_angles'].copy()
     cmd = config['cmd_init'].copy()
     height_cmd = config['height_cmd']
+    key_listener = KeyListener()
     
     # Initialize observation history
     single_obs, single_obs_dim = compute_observation(d, config, action, cmd, height_cmd, n_joints)
@@ -166,6 +200,7 @@ def main():
             counter += 1
             if counter % config['control_decimation'] == 0:
                 # Update observation
+                cmd, height_cmd = handle_key_cmd(key_listener, cmd, height_cmd)
                 single_obs, _ = compute_observation(d, config, action, cmd, height_cmd, n_joints)
                 obs_history.append(single_obs)
                 
