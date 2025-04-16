@@ -1015,7 +1015,7 @@ class LeggedRobot(BaseTask):
         Returns:
             [type]: [description]
         """
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         left_foot_pos = self.rigid_body_states[:, self.left_foot_indices, :3].clone()
         right_foot_pos = self.rigid_body_states[:, self.right_foot_indices, :3].clone()
         if self.cfg.terrain.mesh_type == 'plane':
