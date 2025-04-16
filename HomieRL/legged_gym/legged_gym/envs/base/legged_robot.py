@@ -1015,6 +1015,7 @@ class LeggedRobot(BaseTask):
         Returns:
             [type]: [description]
         """
+        import ipdb; ipdb.set_trace()
         left_foot_pos = self.rigid_body_states[:, self.left_foot_indices, :3].clone()
         right_foot_pos = self.rigid_body_states[:, self.right_foot_indices, :3].clone()
         if self.cfg.terrain.mesh_type == 'plane':
@@ -1144,7 +1145,7 @@ class LeggedRobot(BaseTask):
         feet_height, feet_height_var = self._get_feet_heights()
         height_error = torch.square(feet_height - self.cfg.rewards.clearance_height_target).view(self.num_envs, -1)
         feet_leteral_vel = torch.sqrt(torch.sum(torch.square(feetvel_in_body_frame[:, :, :2]), dim=2)).view(self.num_envs, -1)
-        return torch.sum(height_error * feet_leteral_vel, dim=1) * (self.commands[:, 4]>=0.71)
+        return torch.sum(height_error * feet_leteral_vel, dim=1) * (self.commands[:, 4]>=0.71) # TODO: change for h1_2, refactor
     
     def _reward_feet_distance_lateral(self):
         cur_footpos_translated = self.feet_pos - self.root_states[:, 0:3].unsqueeze(1)

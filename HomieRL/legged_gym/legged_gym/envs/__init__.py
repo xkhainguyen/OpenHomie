@@ -38,4 +38,4 @@ import os
 from legged_gym.utils.task_registry import task_registry
 
 task_registry.register( "g1", LeggedRobot, G1RoughCfg(), G1RoughCfgPPO() )
-task_registry.register( "h12", LeggedRobot, H12RoughCfg(), H12RoughCfgPPO() )
+task_registry.register( "h1_2", LeggedRobot, H12RoughCfg(), H12RoughCfgPPO() )

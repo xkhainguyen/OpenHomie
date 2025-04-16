@@ -32,7 +32,7 @@ from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobot
 import numpy as np
 
 class H12RoughCfg( LeggedRobotCfg ):
-    class init_state( LeggedRobotCfg.init_state ):
+    class init_state( LeggedRobotCfg.init_state ): #TODO: change for h12
         pos = [0.0, 0.0, 1.05] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
             'left_hip_yaw_joint' : 0. ,   
@@ -64,7 +64,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             "right_wrist_yaw_joint": 0.,
         }
 
-    class control( LeggedRobotCfg.control ):
+    class control( LeggedRobotCfg.control ): #TODO: change for h12
         # PD Drive parameters:
         control_type = 'M'
           # PD Drive parameters:
@@ -73,7 +73,7 @@ class H12RoughCfg( LeggedRobotCfg ):
                      'hip_pitch': 200,
                      'knee': 300,
                      'ankle': 40,
-                     "waist": 300,
+                     "torso": 300,
                      "shoulder": 200,
                      "wrist": 20,
                      "elbow": 100,
@@ -83,7 +83,7 @@ class H12RoughCfg( LeggedRobotCfg ):
                      'hip_pitch': 2.5,
                      'knee': 4,
                      'ankle': 2,
-                     "waist": 5,
+                     "torso": 5,
                      "shoulder": 4,
                      "wrist": 0.5,
                      "elbow": 1,
@@ -130,7 +130,7 @@ class H12RoughCfg( LeggedRobotCfg ):
         hand_names = ["L_hand_base_link", "R_hand_base_link"]
         self_collision = 1
         flip_visual_attachments = False
-        ankle_sole_distance = 0.02
+        ankle_sole_distance = 0.02 #TODO: change for h12
 
         
     class domain_rand(LeggedRobotCfg.domain_rand):
@@ -181,7 +181,7 @@ class H12RoughCfg( LeggedRobotCfg ):
         init_upper_ratio = 0.
         delay = use_random
 
-    class rewards( LeggedRobotCfg.rewards ):
+    class rewards( LeggedRobotCfg.rewards ): #TODO: change for h12
         class scales:
             tracking_x_vel = 1.5
             tracking_y_vel = 1.

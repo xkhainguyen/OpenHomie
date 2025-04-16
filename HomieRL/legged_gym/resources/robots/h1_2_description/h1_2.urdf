@@ -152,27 +152,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.08 0.0 -0.04" rpy="1.5707963267948966192313216916398 0.0 0.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.005" length="0.076"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.17 0.0 -0.04" rpy="1.5707963267948966192313216916398 0.0 0.0"/>
-      <geometry>
-        <cylinder radius="0.005" length="0.042"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.027 -0.038 -0.04" rpy="0.0 1.5707963267948966192313216916398 0.0"/>
-      <geometry>
-        <cylinder radius="0.005" length="0.21"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.027 0.038 -0.04" rpy="0.0 1.5707963267948966192313216916398 0.0"/>
-      <geometry>
-        <cylinder radius="0.005" length="0.21"/>
+        <mesh filename="meshes/left_ankle_roll_link.STL"/>
       </geometry>
     </collision>
   </link>
@@ -316,27 +298,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.08 0.0 -0.04" rpy="1.5707963267948966192313216916398 0.0 0.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.005" length="0.076"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.17 0.0 -0.04" rpy="1.5707963267948966192313216916398 0.0 0.0"/>
-      <geometry>
-        <cylinder radius="0.005" length="0.042"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.027 -0.038 -0.04" rpy="0.0 1.5707963267948966192313216916398 0.0"/>
-      <geometry>
-        <cylinder radius="0.005" length="0.21"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.027 0.038 -0.04" rpy="0.0 1.5707963267948966192313216916398 0.0"/>
-      <geometry>
-        <cylinder radius="0.005" length="0.21"/>
+        <mesh filename="meshes/right_ankle_roll_link.STL"/>
       </geometry>
     </collision>
   </link>
@@ -1354,4 +1318,76 @@
     <limit lower="0" upper="1.7" effort="1" velocity="0.5"/>
     <mimic joint="R_pinky_proximal_joint" multiplier="1" offset="0"/>
   </joint>
+
+  <link name="left_foot_front_link" />
+  <joint name="left_foot_front_joint" type="fixed" dont_collapse="true">
+    <origin xyz="0.15 0 -0.05" rpy="0 0 0" />
+    <parent link="left_ankle_roll_link" />
+    <child link="left_foot_front_link" />
+  </joint>
+
+  <link name="left_foot_mid_link" />
+  <joint name="left_foot_mid_joint" type="fixed" dont_collapse="true">
+    <origin xyz="0.0 0 -0.045" rpy="0 0 0" />
+    <parent link="left_ankle_roll_link" />
+    <child link="left_foot_mid_link" />
+  </joint>
+
+  <link name="left_foot_hind_link" />
+  <joint name="left_foot_hind_joint" type="fixed" dont_collapse="true">
+    <origin xyz="-0.06 0 -0.04" rpy="0 0 0" />
+    <parent link="left_ankle_roll_link" />
+    <child link="left_foot_hind_link" />
+  </joint>
+
+  <link name="right_foot_front_link" >
+    <!-- <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01" />
+      </geometry>
+      <material name="white">
+        <color rgba="0.0 0.0 1.0 1"/>
+      </material>
+    </visual> -->
+  </link>
+  <joint name="right_foot_front_joint" type="fixed" dont_collapse="true">
+    <origin xyz="0.15 0 -0.05" rpy="0 0 0" />
+    <parent link="right_ankle_roll_link" />
+    <child link="right_foot_front_link" />
+  </joint>
+
+  <link name="right_foot_mid_link">
+    <!-- <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01" />
+      </geometry>
+      <material name="white">
+        <color rgba="0.0 0.0 1.0 1"/>
+      </material>
+    </visual> -->
+  </link>  
+  <joint name="right_foot_mid_joint" type="fixed" dont_collapse="true">
+    <origin xyz="0.0 0 -0.045" rpy="0 0 0" />
+    <parent link="right_ankle_roll_link" />
+    <child link="right_foot_mid_link" />
+  </joint>
+
+  <link name="right_foot_hind_link"> 
+    <!-- <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01" />
+      </geometry>
+      <material name="white">
+        <color rgba="0.0 0.0 1.0 1"/>
+      </material>
+    </visual> -->
+  </link>
+  <joint name="right_foot_hind_joint" type="fixed" dont_collapse="true">
+    <origin xyz="-0.08 0 -0.05" rpy="0 0 0" />
+    <parent link="right_ankle_roll_link" />
+    <child link="right_foot_hind_link" />
+  </joint>
 </robot>
+  
+</robot>
+
