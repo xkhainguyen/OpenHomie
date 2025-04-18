@@ -91,7 +91,7 @@ class H12RoughCfg( LeggedRobotCfg ):
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
         # decimation: Number of control action updates @ sim DT per policy DT
-        decimation = 4
+        decimation = 8
         hip_reduction = 1.0
 
     class commands( LeggedRobotCfg.commands ):
@@ -225,8 +225,8 @@ class H12RoughCfg( LeggedRobotCfg ):
         max_contact_force = 400.
         least_feet_distance = 0.2
         least_feet_distance_lateral = 0.2
-        most_feet_distance_lateral = 0.35
-        most_knee_distance_lateral = 0.35
+        most_feet_distance_lateral = 0.4
+        most_knee_distance_lateral = 0.4
         least_knee_distance_lateral = 0.2
         clearance_height_target = 0.14
         
@@ -258,6 +258,9 @@ class H12RoughCfg( LeggedRobotCfg ):
             ang_vel = 0.5
             gravity = 0.05
             height_measurement = 0.1
+
+    class sim(LeggedRobotCfg.sim):
+        dt = 1/400
 
 class H12RoughCfgPPO( LeggedRobotCfgPPO ):
     class algorithm( LeggedRobotCfgPPO.algorithm ):
