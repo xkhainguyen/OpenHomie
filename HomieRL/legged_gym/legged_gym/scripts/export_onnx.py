@@ -21,7 +21,7 @@ def export_jit_to_onnx(jit_model, path, dummy_input):
     )
     print(f"Exported JIT model to ONNX at: {path}")
 
-pt_path = ""
+pt_path = "/home/rtx3/khai/OpenHomie/HomieRL/legged_gym/logs/Apr18_12-24-37_my_policy/model_31600.pt"
 jit_model = torch.jit.load(pt_path) # path to your .pt file
 dummy_input = torch.randn(1, 76*6, device='cpu')  # shape of the input of the model
 export_path = ""

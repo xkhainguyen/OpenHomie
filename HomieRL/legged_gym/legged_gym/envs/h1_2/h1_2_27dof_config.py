@@ -48,17 +48,17 @@ class H12RoughCfg( LeggedRobotCfg ):
            'right_ankle_pitch_joint': -0.2,                              
            'right_ankle_roll_joint' : 0,         
             "torso_joint":0.,
-            "left_shoulder_pitch_joint": 0.,
+            "left_shoulder_pitch_joint": 0.4,
             "left_shoulder_roll_joint": 0.,
             "left_shoulder_yaw_joint": 0.,
-            "left_elbow_joint": 0.,
+            "left_elbow_joint": 0.3,
             "left_wrist_roll_joint": 0.,
             "left_wrist_pitch_joint": 0.,
             "left_wrist_yaw_joint": 0.,
-            "right_shoulder_pitch_joint": 0.,
+            "right_shoulder_pitch_joint": 0.4,
             "right_shoulder_roll_joint": -0.,#-0.3
             "right_shoulder_yaw_joint": 0.,
-            "right_elbow_joint": 0.,#0.8
+            "right_elbow_joint": 0.3,#0.8
             "right_wrist_roll_joint": 0.,
             "right_wrist_pitch_joint": 0.,
             "right_wrist_yaw_joint": 0.,
@@ -75,8 +75,8 @@ class H12RoughCfg( LeggedRobotCfg ):
                      'ankle': 40,
                      "torso": 300,
                      "shoulder": 200,
-                     "wrist": 20,
                      "elbow": 100,
+                     "wrist": 20,                     
                      }  # [N*m/rad]
         damping = {  'hip_yaw': 2.5,
                      'hip_roll': 2.5,
@@ -85,8 +85,8 @@ class H12RoughCfg( LeggedRobotCfg ):
                      'ankle': 2,
                      "torso": 5,
                      "shoulder": 4,
-                     "wrist": 0.5,
                      "elbow": 1,
+                     "wrist": 0.5,
                      }  # [N*m/rad]  # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
@@ -130,7 +130,8 @@ class H12RoughCfg( LeggedRobotCfg ):
         hand_names = ["L_hand_base_link", "R_hand_base_link"]
         self_collision = 1
         flip_visual_attachments = False
-        ankle_sole_distance = 0.02 #TODO: change for h12
+        ankle_sole_distance = 0.03 #TODO: change for h12
+        armature = 1e-3
 
         
     class domain_rand(LeggedRobotCfg.domain_rand):
@@ -221,12 +222,12 @@ class H12RoughCfg( LeggedRobotCfg ):
         soft_dof_pos_limit = 0.975
         soft_dof_vel_limit = 0.80
         soft_torque_limit = 0.95
-        base_height_target = 1.02
+        base_height_target = 1.0
         max_contact_force = 400.
         least_feet_distance = 0.2
         least_feet_distance_lateral = 0.2
-        most_feet_distance_lateral = 0.4
-        most_knee_distance_lateral = 0.4
+        most_feet_distance_lateral = 0.45
+        most_knee_distance_lateral = 0.45
         least_knee_distance_lateral = 0.2
         clearance_height_target = 0.14
         
