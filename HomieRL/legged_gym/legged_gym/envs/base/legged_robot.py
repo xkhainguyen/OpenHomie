@@ -1145,16 +1145,16 @@ class LeggedRobot(BaseTask):
             feetvel_in_body_frame[:, i, :] = quat_rotate_inverse(self.base_quat, cur_feetvel_translated[:, i, :])
         feet_height, feet_height_var = self._get_feet_heights()
         height_error = torch.square(feet_height - self.cfg.rewards.clearance_height_target).view(self.num_envs, -1)
-        feet_leteral_vel = torch.sqrt(torch.sum(torch.square(feetvel_in_body_frame[:, :, :2]), dim=2)).view(self.num_envs, -1)
-        return torch.sum(height_error * feet_leteral_vel, dim=1) * (self.commands[:, 4]>=0.71) # TODO: change for h1_2, refactor
+        feet_lateral_vel = torch.sqrt(torch.sum(torch.square(feetvel_in_body_frame[:, :, :2]), dim=2)).view(self.num_envs, -1)
+        return torch.sum(height_error * feet_lateral_vel, dim=1) * (self.commands[:, 4] >= 0.71) # TODO: change for h1_2, refactor
     
     def _reward_feet_distance_lateral(self):
         cur_footpos_translated = self.feet_pos - self.root_states[:, 0:3].unsqueeze(1)
         footpos_in_body_frame = torch.zeros(self.num_envs, len(self.feet_indices), 3, device=self.device)
         for i in range(len(self.feet_indices)):
             footpos_in_body_frame[:, i, :] = quat_rotate_inverse(self.base_quat, cur_footpos_translated[:, i, :])
-        foot_leteral_dis = torch.abs(footpos_in_body_frame[:, 0, 1] - footpos_in_body_frame[:, 1, 1])
-        return torch.clamp(foot_leteral_dis - self.cfg.rewards.least_feet_distance_lateral, max=0) + torch.clamp(-foot_leteral_dis + self.cfg.rewards.most_feet_distance_lateral, max=0) * (self.commands[:, 4] >= 0.735)
+        foot_lateral_dis = torch.abs(footpos_in_body_frame[:, 0, 1] - footpos_in_body_frame[:, 1, 1])
+        return torch.clamp(foot_lateral_dis - self.cfg.rewards.least_feet_distance_lateral, max=0) + torch.clamp(-foot_lateral_dis + self.cfg.rewards.most_feet_distance_lateral, max=0) * (self.commands[:, 4] >= 0.735)
     
     def _reward_knee_distance_lateral(self):
         cur_knee_pos_translated = self.rigid_body_states[:, self.knee_indices, :3].clone() - self.root_states[:, 0:3].unsqueeze(1)
@@ -1239,3 +1239,8 @@ class LeggedRobot(BaseTask):
         contacts = torch.sum(self.contact_forces[:, self.feet_indices, 2] < 0.1, dim=-1)
         error_sim = (contacts) * (self.commands[:, 4] >= 0.735)
         return error_sim * (torch.norm(self.commands[:, :3], dim=1) < 0.1)
+    
+    def _reward_stand_still_angle(self):
+        # Penalize angular rate at zero commands
+        error = torch.sum(torch.square(self.base_ang_vel[:, :2]), dim=1)
+        return error * (torch.norm(self.commands[:, :3], dim=1) < 0.1)

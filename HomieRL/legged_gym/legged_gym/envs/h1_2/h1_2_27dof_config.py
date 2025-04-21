@@ -141,7 +141,7 @@ class H12RoughCfg( LeggedRobotCfg ):
         self_collision = 1
         flip_visual_attachments = False
         ankle_sole_distance = 0.03 #TODO: change for h12
-        armature = 1e-3
+        armature = 1e-2
 
         
     class domain_rand(LeggedRobotCfg.domain_rand):
