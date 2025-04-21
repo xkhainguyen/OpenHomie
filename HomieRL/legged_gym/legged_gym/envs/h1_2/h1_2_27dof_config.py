@@ -78,15 +78,25 @@ class H12RoughCfg( LeggedRobotCfg ):
                      "elbow": 100,
                      "wrist": 20,                     
                      }  # [N*m/rad]
-        damping = {  'hip_yaw': 2.5,
-                     'hip_roll': 2.5,
-                     'hip_pitch': 2.5,
-                     'knee': 4,
-                     'ankle': 2,
-                     "torso": 5,
-                     "shoulder": 4,
-                     "elbow": 1,
-                     "wrist": 0.5,
+        # damping = {  'hip_yaw': 2.5,
+        #              'hip_roll': 2.5,
+        #              'hip_pitch': 2.5,
+        #              'knee': 4,
+        #              'ankle': 2,
+        #              "torso": 5,
+        #              "shoulder": 4,
+        #              "elbow": 1,
+        #              "wrist": 0.5,
+        #              }  # [N*m/rad]  # [N*m*s/rad]
+        damping = {  'hip_yaw': 3.,
+                     'hip_roll': 3.,
+                     'hip_pitch': 3.,
+                     'knee': 4.5,
+                     'ankle': 2.5,
+                     "torso": 5.5,
+                     "shoulder": 4.5,
+                     "elbow": 1.5,
+                     "wrist": 1.0,
                      }  # [N*m/rad]  # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
@@ -207,7 +217,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             joint_power = -2e-5
             feet_stumble = -1.5
             torques = -2.5e-6
-            dof_vel = -1e-4
+            dof_vel = -5e-4
             dof_vel_limits = -2e-3
             torque_limits = -0.1
             no_fly = 0.75
@@ -226,8 +236,8 @@ class H12RoughCfg( LeggedRobotCfg ):
         max_contact_force = 400.
         least_feet_distance = 0.2
         least_feet_distance_lateral = 0.2
-        most_feet_distance_lateral = 0.45
-        most_knee_distance_lateral = 0.45
+        most_feet_distance_lateral = 0.5
+        most_knee_distance_lateral = 0.5
         least_knee_distance_lateral = 0.2
         clearance_height_target = 0.14
         
@@ -277,6 +287,6 @@ class H12RoughCfgPPO( LeggedRobotCfgPPO ):
         run_name = ''
         experiment_name = ''
         wandb_project = ""
-        logger = "wandb"        
-        # logger = "tensorboard"        
-        wandb_user = "" # enter your own wandb user name here
+        # logger = "wandb"        
+        logger = "tensorboard"        
+        # wandb_user = "" # enter your own wandb user name here

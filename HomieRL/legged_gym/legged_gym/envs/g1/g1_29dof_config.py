@@ -33,7 +33,7 @@ import numpy as np
 
 class G1RoughCfg( LeggedRobotCfg ):
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.75] # x,y,z [m]
+        pos = [0.0, 0.0, 0.8] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
             'left_hip_yaw_joint' : 0. ,   
            'left_hip_roll_joint' : 0,               
@@ -152,6 +152,7 @@ class G1RoughCfg( LeggedRobotCfg ):
         self_collision = 1
         flip_visual_attachments = False
         ankle_sole_distance = 0.02
+        armature = 1e-3
 
         
     class domain_rand(LeggedRobotCfg.domain_rand):
@@ -227,7 +228,7 @@ class G1RoughCfg( LeggedRobotCfg ):
             joint_power = -2e-5
             feet_stumble = -1.5
             torques = -2.5e-6
-            dof_vel = -1e-4
+            dof_vel = -5e-4
             dof_vel_limits = -2e-3
             torque_limits = -0.1
             no_fly = 0.75
@@ -242,7 +243,7 @@ class G1RoughCfg( LeggedRobotCfg ):
         soft_dof_pos_limit = 0.975
         soft_dof_vel_limit = 0.80
         soft_torque_limit = 0.95
-        base_height_target = 0.74
+        base_height_target = 0.78
         max_contact_force = 400.
         least_feet_distance = 0.2
         least_feet_distance_lateral = 0.2
@@ -294,6 +295,6 @@ class G1RoughCfgPPO( LeggedRobotCfgPPO ):
         run_name = ''
         experiment_name = ''
         wandb_project = ""
-        logger = "wandb"        
-        # logger = "tensorboard"        
-        wandb_user = "" # enter your own wandb user name here
+        # logger = "wandb"        
+        logger = "tensorboard"        
+        # wandb_user = "" # enter your own wandb user name here
