@@ -226,7 +226,8 @@ class H12RoughCfg( LeggedRobotCfg ):
             feet_contact_forces = -0.00025
             contact_momentum = 2.5e-4
             action_vanish = -1.0
-            stand_still = -0.15    
+            stand_still = -0.15 
+            stand_still_angle = -0.1   
         only_positive_rewards = False
         tracking_sigma = 0.25
         soft_dof_pos_limit = 0.975
