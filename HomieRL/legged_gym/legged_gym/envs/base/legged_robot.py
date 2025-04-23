@@ -1174,7 +1174,7 @@ class LeggedRobot(BaseTask):
         right_foot_pos = self.rigid_body_states[:, self.right_foot_indices[0:3], :3].clone()
         feet_distances = torch.norm(left_foot_pos - right_foot_pos, dim=2)
         feet_distances_var = torch.var(feet_distances, dim=1)
-        return feet_distances_var * (self.commands[:, 4] >= 0.735)
+        return feet_distances_var * (self.commands[:, 4] >= 0.995) 
     
     def _reward_smoothness(self):
         # second order smoothness
@@ -1240,6 +1240,7 @@ class LeggedRobot(BaseTask):
         error_sim = (contacts) * (self.commands[:, 4] >= 0.735)
         return error_sim * (torch.norm(self.commands[:, :3], dim=1) < 0.1)
     
+    # kHAI ADD
     def _reward_stand_still_angle(self):
         # Penalize angular rate at zero commands
         error = torch.sum(torch.square(self.base_ang_vel[:, :2]), dim=1)

@@ -149,7 +149,7 @@ class TaskRegistry():
         resume = args.resume
         if resume:
             # load previously trained model
-            resume_path = "/HomieRL/legged_gym/logs/Apr18_12-24-37_my_policy/model_31400.pt"
+            resume_path = "/home/cookie/VR/OpenHomie/HomieRL/logs/h1_2/Apr22_16-02-35_armature.l2/model_14200.pt"
             print(f"Loading model from: {resume_path}")
             runner.load(resume_path)
         return runner, train_cfg
