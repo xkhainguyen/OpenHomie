@@ -68,15 +68,15 @@ class H12RoughCfg( LeggedRobotCfg ):
         # PD Drive parameters:
         control_type = 'M'
           # PD Drive parameters:
-        stiffness = {'hip_yaw': 200,
-                     'hip_roll': 200,
-                     'hip_pitch': 200,
-                     'knee': 300,
-                     'ankle': 40,
-                     "torso": 300,
-                     "shoulder": 200,
-                     "elbow": 100,
-                     "wrist": 20,                     
+        stiffness = {'hip_yaw': 350,
+                     'hip_roll': 350,
+                     'hip_pitch': 350   ,
+                     'knee': 350,
+                     'ankle': 120,
+                     "torso": 200,
+                     "shoulder": 350,
+                     "elbow": 350,
+                     "wrist": 350,                     
                      }  # [N*m/rad]
         # damping = {  'hip_yaw': 2.5,
         #              'hip_roll': 2.5,
@@ -88,15 +88,15 @@ class H12RoughCfg( LeggedRobotCfg ):
         #              "elbow": 1,
         #              "wrist": 0.5,
         #              }  # [N*m/rad]  # [N*m*s/rad]
-        damping = {  'hip_yaw': 3.,
-                     'hip_roll': 3.,
-                     'hip_pitch': 3.,
-                     'knee': 4.5,
+        damping = {  'hip_yaw': 4.,
+                     'hip_roll': 4.,
+                     'hip_pitch': 4.,
+                     'knee': 4,
                      'ankle': 2.5,
-                     "torso": 5.5,
-                     "shoulder": 4.5,
-                     "elbow": 1.5,
-                     "wrist": 1.0,
+                     "torso": 4,
+                     "shoulder": 4,
+                     "elbow": 4,
+                     "wrist": 4.0,
                      }  # [N*m/rad]  # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
@@ -227,7 +227,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             contact_momentum = 2.5e-4
             action_vanish = -1.0
             stand_still = -0.15 
-            stand_still_angle = -0.1   
+            stand_still_angle = 0.0   
         only_positive_rewards = False
         tracking_sigma = 0.25
         soft_dof_pos_limit = 0.975
