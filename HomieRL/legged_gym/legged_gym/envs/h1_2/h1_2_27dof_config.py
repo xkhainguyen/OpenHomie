@@ -92,7 +92,7 @@ class H12RoughCfg( LeggedRobotCfg ):
                      'hip_roll': 4.,
                      'hip_pitch': 4.,
                      'knee': 4,
-                     'ankle': 2.5,
+                     'ankle': 3.5,
                      "torso": 4,
                      "shoulder": 4,
                      "elbow": 4,
@@ -116,7 +116,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             lin_vel_y = [-0.5, 0.5]   # min max [m/s]
             ang_vel_yaw = [-0.8, 0.8]    # min max [rad/s]
             heading = [-3.14, 3.14]
-            height = [-0.5, 0.0]
+            height = [-0.4, 0.0]
 
     class asset( LeggedRobotCfg.asset ):
         file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2_description/h1_2.urdf'
@@ -141,7 +141,7 @@ class H12RoughCfg( LeggedRobotCfg ):
         self_collision = 1
         flip_visual_attachments = False
         ankle_sole_distance = 0.03 #TODO: change for h12
-        armature = 1e-2
+        armature = 8e-3
 
         
     class domain_rand(LeggedRobotCfg.domain_rand):
