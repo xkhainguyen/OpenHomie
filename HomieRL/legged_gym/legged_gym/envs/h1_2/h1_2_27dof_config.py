@@ -88,11 +88,11 @@ class H12RoughCfg( LeggedRobotCfg ):
         #              "elbow": 1,
         #              "wrist": 0.5,
         #              }  # [N*m/rad]  # [N*m*s/rad]
-        damping = {  'hip_yaw': 3.,
-                     'hip_roll': 3.,
-                     'hip_pitch': 3.,
-                     'knee': 4.5,
-                     'ankle': 2.5,
+        damping = {  'hip_yaw': 4.,
+                     'hip_roll': 4.,
+                     'hip_pitch': 4.,
+                     'knee': 5.0,
+                     'ankle': 4.0,
                      "torso": 5.5,
                      "shoulder": 4.5,
                      "elbow": 1.5,
@@ -116,7 +116,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             lin_vel_y = [-0.5, 0.5]   # min max [m/s]
             ang_vel_yaw = [-0.8, 0.8]    # min max [rad/s]
             heading = [-3.14, 3.14]
-            height = [-0.5, 0.0]
+            height = [-0.4, 0.0]
 
     class asset( LeggedRobotCfg.asset ):
         file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2_description/h1_2.urdf'
@@ -226,8 +226,8 @@ class H12RoughCfg( LeggedRobotCfg ):
             feet_contact_forces = -0.00025
             contact_momentum = 2.5e-4
             action_vanish = -1.0
-            stand_still = -0.15 
-            stand_still_angle = -0.1   
+            stand_still = -0.2 
+            # stand_still_angle = -0.1   
         only_positive_rewards = False
         tracking_sigma = 0.25
         soft_dof_pos_limit = 0.975
@@ -237,8 +237,8 @@ class H12RoughCfg( LeggedRobotCfg ):
         max_contact_force = 400.
         least_feet_distance = 0.2
         least_feet_distance_lateral = 0.2
-        most_feet_distance_lateral = 0.5
-        most_knee_distance_lateral = 0.5
+        most_feet_distance_lateral = 0.45
+        most_knee_distance_lateral = 0.45
         least_knee_distance_lateral = 0.2
         clearance_height_target = 0.14
         
