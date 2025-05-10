@@ -68,15 +68,15 @@ class H12RoughCfg( LeggedRobotCfg ):
         # PD Drive parameters:
         control_type = 'M'
           # PD Drive parameters:
-        stiffness = {'hip_yaw': 200,
-                     'hip_roll': 200,
-                     'hip_pitch': 200,
-                     'knee': 300,
-                     'ankle': 40,
-                     "torso": 300,
-                     "shoulder": 200,
-                     "elbow": 100,
-                     "wrist": 20,                     
+        stiffness = {'hip_yaw': 350,
+                     'hip_roll': 350,
+                     'hip_pitch': 350   ,
+                     'knee': 350,
+                     'ankle': 120,
+                     "torso": 200,
+                     "shoulder": 350,
+                     "elbow": 350,
+                     "wrist": 350,                     
                      }  # [N*m/rad]
         # damping = {  'hip_yaw': 2.5,
         #              'hip_roll': 2.5,
@@ -88,24 +88,24 @@ class H12RoughCfg( LeggedRobotCfg ):
         #              "elbow": 1,
         #              "wrist": 0.5,
         #              }  # [N*m/rad]  # [N*m*s/rad]
-        damping = {  'hip_yaw': 3.,
-                     'hip_roll': 3.,
-                     'hip_pitch': 3.,
-                     'knee': 4.5,
-                     'ankle': 2.5,
-                     "torso": 5.5,
-                     "shoulder": 4.5,
-                     "elbow": 1.5,
-                     "wrist": 1.0,
+        damping = {  'hip_yaw': 4.,
+                     'hip_roll': 4.,
+                     'hip_pitch': 4.,
+                     'knee': 4,
+                     'ankle': 3.5,
+                     "torso": 4,
+                     "shoulder": 4,
+                     "elbow": 4,
+                     "wrist": 4.0,
                      }  # [N*m/rad]  # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
-        action_scale = 0.25
+        action_scale = 0.15
         # decimation: Number of control action updates @ sim DT per policy DT
         decimation = 8
         hip_reduction = 1.0
 
     class commands( LeggedRobotCfg.commands ):
-        curriculum = False # NOTE set True later
+        curriculum = True
         max_curriculum = 1.4
         num_commands = 5 # lin_vel_x, lin_vel_y, ang_vel_yaw, heading, height, orientation
         resampling_time = 4. # time before command are changed[s]
@@ -116,7 +116,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             lin_vel_y = [-0.5, 0.5]   # min max [m/s]
             ang_vel_yaw = [-0.8, 0.8]    # min max [rad/s]
             heading = [-3.14, 3.14]
-            height = [-0.5, 0.0]
+            height = [-0.4, 0.0]
 
     class asset( LeggedRobotCfg.asset ):
         file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1_2_description/h1_2.urdf'
@@ -140,8 +140,8 @@ class H12RoughCfg( LeggedRobotCfg ):
         hand_names = ["L_hand_base_link", "R_hand_base_link"]
         self_collision = 1
         flip_visual_attachments = False
-        ankle_sole_distance = 0.03 #TODO: change for h12
-        armature = 1e-2
+        ankle_sole_distance = 0.05
+        armature = 5e-3
 
         
     class domain_rand(LeggedRobotCfg.domain_rand):
@@ -227,7 +227,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             contact_momentum = 2.5e-4
             action_vanish = -1.0
             stand_still = -0.15 
-            stand_still_angle = -0.1   
+            stand_still_angle = 0.0   
         only_positive_rewards = False
         tracking_sigma = 0.25
         soft_dof_pos_limit = 0.975
