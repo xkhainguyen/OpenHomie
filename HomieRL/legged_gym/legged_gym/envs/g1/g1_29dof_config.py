@@ -130,7 +130,7 @@ class G1RoughCfg( LeggedRobotCfg ):
             height = [-0.5, 0.0]
 
     class asset( LeggedRobotCfg.asset ):
-        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/g1_description/g1.urdf'
+        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/g1_description/g1_inspire.urdf'
         name = "g1"
         foot_name = "ankle_roll"
         left_foot_name = "left_foot"
@@ -272,7 +272,7 @@ class G1RoughCfg( LeggedRobotCfg ):
     class terrain(LeggedRobotCfg.terrain):
         mesh_type = 'plane'
 
-    class noise( LeggedRobotCfg.terrain ):
+    class noise( LeggedRobotCfg.noise ):
         add_noise = True
         noise_level = 1.0
         class noise_scales( LeggedRobotCfg.noise.noise_scales ):
