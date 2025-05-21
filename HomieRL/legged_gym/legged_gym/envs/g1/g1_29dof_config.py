@@ -33,7 +33,7 @@ import numpy as np
 
 class G1RoughCfg( LeggedRobotCfg ):
     class init_state( LeggedRobotCfg.init_state ):
-        pos = [0.0, 0.0, 0.8] # x,y,z [m]
+        pos = [0.0, 0.0, 0.75] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
             'left_hip_yaw_joint' : 0. ,   
            'left_hip_roll_joint' : 0,               
@@ -148,7 +148,7 @@ class G1RoughCfg( LeggedRobotCfg ):
         upper_body_link = "torso_link"
         imu_link = "imu_in_pelvis"
         knee_names = ["left_knee_link", "left_hip_yaw_link", "right_knee_link", "right_hip_yaw_link"]
-        hand_names = ["left_hand_palm_link", "right_hand_palm_link"]
+        hand_names = ["L_hand_base_link", "R_hand_base_link"]
         self_collision = 1
         flip_visual_attachments = False
         ankle_sole_distance = 0.02
@@ -228,7 +228,7 @@ class G1RoughCfg( LeggedRobotCfg ):
             joint_power = -2e-5
             feet_stumble = -1.5
             torques = -2.5e-6
-            dof_vel = -5e-4
+            dof_vel = -1e-4
             dof_vel_limits = -2e-3
             torque_limits = -0.1
             no_fly = 0.75
@@ -237,21 +237,22 @@ class G1RoughCfg( LeggedRobotCfg ):
             feet_contact_forces = -0.00025
             contact_momentum = 2.5e-4
             action_vanish = -1.0
-            stand_still = -0.15  
-            stand_still_angle = -0.1  
+            stand_still = -0.15
+            # stand_still_dof_vel = -1e-3
+              
         only_positive_rewards = False
         tracking_sigma = 0.25
         soft_dof_pos_limit = 0.975
         soft_dof_vel_limit = 0.80
         soft_torque_limit = 0.95
-        base_height_target = 0.78
+        base_height_target = 0.75
         max_contact_force = 400.
         least_feet_distance = 0.2
         least_feet_distance_lateral = 0.2
         most_feet_distance_lateral = 0.35
         most_knee_distance_lateral = 0.35
         least_knee_distance_lateral = 0.2
-        clearance_height_target = 0.14
+        clearance_height_target = 0.20
         
     class env( LeggedRobotCfg.rewards ):
         num_envs = 4096

@@ -1240,7 +1240,7 @@ class LeggedRobot(BaseTask):
         error_sim = (contacts) * (self.commands[:, 4] >= 0.735)
         return error_sim * (torch.norm(self.commands[:, :3], dim=1) < 0.1)
     
-    def _reward_stand_still_angle(self):
+    def _reward_stand_still_dof_vel(self):
         # Penalize angular rate at zero commands
-        error = torch.sum(torch.square(self.base_ang_vel[:, :2]), dim=1)
+        error = torch.sum(torch.square(self.dof_vel[:, :self.num_lower_dof]), dim=1)
         return error * (torch.norm(self.commands[:, :3], dim=1) < 0.1)
