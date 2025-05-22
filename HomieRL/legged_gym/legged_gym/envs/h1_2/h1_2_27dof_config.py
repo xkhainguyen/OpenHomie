@@ -181,13 +181,13 @@ class H12RoughCfg( LeggedRobotCfg ):
         kd_range = [0.9, 1.1]
         
         randomize_initial_joint_pos = use_random
-        initial_joint_pos_scale = [0.8, 1.2]
-        initial_joint_pos_offset = [-0.1, 0.1]
+        initial_joint_pos_scale = [0.7, 1.3]
+        initial_joint_pos_offset = [-0.2, 0.2]
         
         push_robots = use_random
         push_interval_s = 4
         upper_interval_s = 1
-        max_push_vel_xy = 0.5
+        max_push_vel_xy = 0.6
         
         init_upper_ratio = 0.
         delay = use_random

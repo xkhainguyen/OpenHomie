@@ -636,13 +636,13 @@ class LeggedRobot(BaseTask):
         if self.custom_origins:
             self.root_states[env_ids] = self.base_init_state
             self.root_states[env_ids, :3] += self.env_origins[env_ids]
-            self.root_states[env_ids, :2] += torch_rand_float(-1., 1., (len(env_ids), 2), device=self.device) # xy position within 1m of the center
-            self.root_states[env_ids, 2:3] += torch_rand_float(0.0, 0.1, (len(env_ids), 1), device=self.device) # z position within 0.1m of the ground
+            self.root_states[env_ids, :2] += torch_rand_float(-1.5, 1.5, (len(env_ids), 2), device=self.device) # xy position within 1m of the center
+            self.root_states[env_ids, 2:3] += torch_rand_float(0.0, 0.2, (len(env_ids), 1), device=self.device) # z position within 0.1m of the ground
         else:
             self.root_states[env_ids] = self.base_init_state
             self.root_states[env_ids, :3] += self.env_origins[env_ids]
         # base velocities
-        self.root_states[env_ids, 7:13] = torch_rand_float(-0.5, 0.5, (len(env_ids), 6), device=self.device) # [7:10]: lin vel, [10:13]: ang vel
+        self.root_states[env_ids, 7:13] = torch_rand_float(-0.7, 0.7, (len(env_ids), 6), device=self.device) # [7:10]: lin vel, [10:13]: ang vel
         env_ids_int32 = env_ids.to(dtype=torch.int32)
         self.gym.set_actor_root_state_tensor_indexed(self.sim,
                                                      gymtorch.unwrap_tensor(self.root_states),
@@ -673,7 +673,7 @@ class LeggedRobot(BaseTask):
         Args:
             env_ids (List[int]): ids of environments being reset
         """
-        if (torch.mean(self.episode_sums["tracking_x_vel"][env_ids]) / self.max_episode_length > 0.8 * self.reward_scales["tracking_x_vel"]):
+        if (torch.mean(self.episode_sums["tracking_x_vel"][env_ids]) / self.max_episode_length > 0.5 * self.reward_scales["tracking_x_vel"]):
             self.action_curriculum_ratio += 0.05
             self.action_curriculum_ratio = min(self.action_curriculum_ratio, 1.0)
 
