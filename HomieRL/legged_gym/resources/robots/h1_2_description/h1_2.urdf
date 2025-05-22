@@ -739,7 +739,7 @@
 
   <link name="left_foot_hind_link" />
   <joint name="left_foot_hind_joint" type="fixed" dont_collapse="true">
-    <origin xyz="-0.06 0 -0.04" rpy="0 0 0" />
+    <origin xyz="-0.08 0 -0.05" rpy="0 0 0" />
     <parent link="left_ankle_roll_link" />
     <child link="left_foot_hind_link" />
   </joint>
