@@ -502,17 +502,52 @@ class LeggedRobot(BaseTask):
                 props[i].mass = scale * self.default_rigid_body_mass[i]
 
         return props
+
+    # def _init_foot(self):
+    #     self.feet_num = len(self.feet_indices)
+        
+    #     rigid_body_state = self.gym.acquire_rigid_body_state_tensor(self.sim)
+    #     self.rigid_body_states = gymtorch.wrap_tensor(rigid_body_state)
+ 
+
+    #     self.rigid_body_states_view = self.rigid_body_states.view(self.num_envs, -1, 13)
+    #     self.feet_state = self.rigid_body_states_view[:, self.feet_indices, :]
+    #     self.feet_pos = self.feet_state[:, :, :3]
+    #     self.feet_vel = self.feet_state[:, :, 7:10]
+
+    #     self.rb_positions = self.rigid_body_states[:, 0:3].view(self.num_envs, -1, 3)
+    
+    # def update_feet_state(self):
+    #     self.gym.refresh_rigid_body_state_tensor(self.sim)
+        
+    #     self.feet_state = self.rigid_body_states_view[:, self.feet_indices, :]
+    #     self.feet_pos = self.feet_state[:, :, :3]
+    #     self.feet_vel = self.feet_state[:, :, 7:10]
     
     def _post_physics_step_callback(self):
         """ Callback called before computing terminations, rewards, and observations
             Default behaviour: Compute ang vel command based on target and heading, compute measured terrain heights and randomly push robots
         """
-        # 
+        # self.update_feet_state()
         env_ids = (self.episode_length_buf % int(self.cfg.commands.resampling_time / self.dt)==0).nonzero(as_tuple=False).flatten()
         self._resample_commands(env_ids)
                 
         if self.cfg.domain_rand.push_robots and  (self.common_step_counter % self.cfg.domain_rand.push_interval == 0):
             self._push_robots()
+        
+        # period = 0.8
+        # self.is_stance_threshold = 0.55
+        # self.offset = torch.where(torch.norm(self.commands[:, :3], dim=1) < 0.1, 0, 0.5)  
+        
+
+        # self.phase = torch.where(torch.norm(self.commands[:, :3], dim=1) < 0.1, 0, (self.episode_length_buf * self.dt) % period / period)
+        # self.phase_left = self.phase
+        # self.phase_right = (self.phase + self.offset) % 1
+        
+        # self.left_sin_phase = torch.sin(2 * np.pi * self.phase_left).unsqueeze(1)
+        # self.right_sin_phase = torch.sin(2 * np.pi * self.phase_right).unsqueeze(1)
+        
+        # self.leg_phase = torch.cat([self.phase_left.unsqueeze(1), self.phase_right.unsqueeze(1)], dim=-1)
 
     def _resample_commands(self, env_ids):
         """ Randommly select commands of some environments
@@ -775,6 +810,8 @@ class LeggedRobot(BaseTask):
         
         #joint powers
         self.joint_powers = torch.zeros(self.num_envs, 100, self.num_dof, dtype=torch.float, device=self.device, requires_grad=False)
+
+        # self._init_foot()
 
     def _prepare_reward_function(self):
         """ Prepares a list of reward functions, whcih will be called to compute the total reward.
@@ -1147,7 +1184,37 @@ class LeggedRobot(BaseTask):
         height_error = torch.square(feet_height - self.cfg.rewards.clearance_height_target).view(self.num_envs, -1)
         feet_lateral_vel = torch.sqrt(torch.sum(torch.square(feetvel_in_body_frame[:, :, :2]), dim=2)).view(self.num_envs, -1)
         return torch.sum(height_error * feet_lateral_vel, dim=1) * (self.commands[:, 4] >= 0.96) # TODO: change for h1_2, refactor
+
+    def _reward_feet_swing_height(self):
+        contact = torch.norm(self.contact_forces[:, self.feet_indices, :3], dim=2) > 1.
+        
+        target_feet_height = self.cfg.rewards.feet_swing_height_threshold # old 0.08 
+        # target_feet_height = 0.1
+        pos_error = torch.square(self.feet_pos[:, :, 2] - target_feet_height) * ~contact 
+        return torch.sum(pos_error, dim=(1))
     
+    def _reward_alive(self):
+        # Reward for staying alive
+        return torch.tensor(1.0, device=self.device)
+    
+    def _reward_contact_no_vel(self):
+        # Penalize contact with no velocity
+        contact = torch.norm(self.contact_forces[:, self.feet_indices, :3], dim=2) > 1.
+        contact_feet_vel = self.feet_vel * contact.unsqueeze(-1)
+        penalize = torch.square(contact_feet_vel[:, :, :3])
+        return torch.sum(penalize, dim=(1,2))
+
+    def _reward_hip_pos(self):
+        return torch.sum(torch.square(self.dof_pos[:,[0,2,6,8]]), dim=1)
+    
+    def _reward_contact(self):
+        res = torch.zeros(self.num_envs, dtype=torch.float, device=self.device)
+        for i in range(self.feet_num):
+            is_stance = self.leg_phase[:, i] < 0.55
+            contact = self.contact_forces[:, self.feet_indices[i], 2] > 1
+            res += ~(contact ^ is_stance)
+        return res
+
     def _reward_feet_distance_lateral(self):
         cur_footpos_translated = self.feet_pos - self.root_states[:, 0:3].unsqueeze(1)
         footpos_in_body_frame = torch.zeros(self.num_envs, len(self.feet_indices), 3, device=self.device)

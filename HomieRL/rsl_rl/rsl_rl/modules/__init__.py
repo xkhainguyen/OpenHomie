@@ -30,3 +30,4 @@
 
 from .him_actor_critic import HIMActorCritic
 from .him_estimator import HIMEstimator
+# from .rnn_actor_mlp_critic import RNNActorMLPCritic

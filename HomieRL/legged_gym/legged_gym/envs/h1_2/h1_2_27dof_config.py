@@ -99,7 +99,7 @@ class H12RoughCfg( LeggedRobotCfg ):
                      "wrist": 1.0,
                      }  # [N*m/rad]  # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
-        action_scale = 0.15
+        action_scale = 0.25
         # decimation: Number of control action updates @ sim DT per policy DT
         decimation = 10
         hip_reduction = 1.0
@@ -138,10 +138,10 @@ class H12RoughCfg( LeggedRobotCfg ):
         imu_link = "imu"
         knee_names = ["left_knee_link", "left_hip_yaw_link", "right_knee_link", "right_hip_yaw_link"]
         hand_names = ["L_hand_base_link", "R_hand_base_link"]
-        self_collision = 1
+        self_collision = 0
         flip_visual_attachments = False
         ankle_sole_distance = 0.05
-        armature = 5e-3
+        armature = 1e-3
 
         
     class domain_rand(LeggedRobotCfg.domain_rand):
@@ -206,8 +206,9 @@ class H12RoughCfg( LeggedRobotCfg ):
             deviation_ankle_joint = -0.5
             deviation_knee_joint = -0.75
             dof_acc = -2.5e-7
-            dof_pos_limits = -2.
-            feet_air_time = 0.05
+            dof_pos_limits = -5.
+            # feet_swing_height = -20.0
+            # feet_air_time = 0.05
             feet_clearance = -0.25
             feet_distance_lateral = 0.5
             knee_distance_lateral = 1.0
@@ -218,6 +219,9 @@ class H12RoughCfg( LeggedRobotCfg ):
             feet_stumble = -1.5
             torques = -2.5e-6
             dof_vel = -1e-4
+            alive = 0.15
+            # hip_pos = -1.0
+            # contact_no_vel = -0.2
             dof_vel_limits = -2e-3
             torque_limits = -0.1
             no_fly = 0.75
@@ -228,14 +232,15 @@ class H12RoughCfg( LeggedRobotCfg ):
             action_vanish = -1.0
             stand_still = -0.15
             # stand_still_angle = -0.1   
-        only_positive_rewards = False
+        only_positive_rewards = True
         tracking_sigma = 0.25
-        soft_dof_pos_limit = 0.975
+        soft_dof_pos_limit = 0.9
         soft_dof_vel_limit = 0.80
         soft_torque_limit = 0.95
-        base_height_target = 1.0
-        max_contact_force = 400.
+        base_height_target = 0.95
+        max_contact_force = 700.
         least_feet_distance = 0.2
+        # feet_swing_height_threshold = 0.08
         least_feet_distance_lateral = 0.2
         most_feet_distance_lateral = 0.45
         most_knee_distance_lateral = 0.45
@@ -275,6 +280,15 @@ class H12RoughCfg( LeggedRobotCfg ):
         dt = 0.002
 
 class H12RoughCfgPPO( LeggedRobotCfgPPO ):
+    class policy:
+        init_noise_std = 0.1
+        actor_hidden_dims = [512, 256, 256]
+        critic_hidden_dims = [512, 256, 256]
+        activation = 'elu' # can be elu, relu, selu, crelu, lrelu, tanh, sigmoid
+        # only for 'ActorCriticRecurrent':
+        # rnn_type = 'lstm'
+        # rnn_hidden_size = 512
+        # rnn_num_layers = 1
     class algorithm( LeggedRobotCfgPPO.algorithm ):
         use_flip = True
         entropy_coef = 0.01
