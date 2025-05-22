@@ -85,9 +85,9 @@ def play(args, x_vel=0.0, y_vel=0.0, yaw_vel=0.0, height=0.74):
     obs = env.get_observations()
     # load policy
     train_cfg.runner.resume = True
-    print("step1")
+    # print("step1")
     ppo_runner, train_cfg = task_registry.make_alg_runner(env=env, name=args.task, args=args, train_cfg=train_cfg)
-    print("step2")
+    # print("step2")
     policy = ppo_runner.get_inference_policy(device=env.device) # Use this to load from trained pt file
     
     # policy = load_onnx_policy() # Use this to load from exported onnx file
@@ -97,25 +97,25 @@ def play(args, x_vel=0.0, y_vel=0.0, yaw_vel=0.0, height=0.74):
         export_policy_as_jit(ppo_runner.alg.actor_critic, path)
         print('Exported policy as jit script to: ', path)
     print(policy)
-    # camera_position = np.array(env_cfg.viewer.pos, dtype=np.float64)
-    # camera_vel = np.array([1., 1., 0.])
-    # camera_direction = np.array(env_cfg.viewer.lookat) - np.array(env_cfg.viewer.pos)
-    # env.reset_idx(torch.arange(env.num_envs).to("cuda:0"))
-    # for _ in range(10*int(env.max_episode_length)):
-    #     env.action_curriculum_ratio = 1.0
-    #     actions = policy(obs.detach())
-    #     env.commands[:, 0] = x_vel
-    #     env.commands[:, 1] = y_vel
-    #     env.commands[:, 2] = yaw_vel
-    #     env.commands[:, 4] = height
-    #     obs, _, _, _, _, _, _ = env.step(actions.detach())
-    #     if MOVE_CAMERA:
-    #         camera_position += camera_vel * env.dt
-    #         env.set_camera(camera_position, camera_position + camera_direction)
+    camera_position = np.array(env_cfg.viewer.pos, dtype=np.float64)
+    camera_vel = np.array([1., 1., 0.])
+    camera_direction = np.array(env_cfg.viewer.lookat) - np.array(env_cfg.viewer.pos)
+    env.reset_idx(torch.arange(env.num_envs).to("cuda:0"))
+    for _ in range(10*int(env.max_episode_length)):
+        env.action_curriculum_ratio = 1.0
+        actions = policy(obs.detach())
+        env.commands[:, 0] = x_vel
+        env.commands[:, 1] = y_vel
+        env.commands[:, 2] = yaw_vel
+        env.commands[:, 4] = height
+        obs, _, _, _, _, _, _ = env.step(actions.detach())
+        if MOVE_CAMERA:
+            camera_position += camera_vel * env.dt
+            env.set_camera(camera_position, camera_position + camera_direction)
 
 if __name__ == '__main__':
     EXPORT_POLICY = True
     RECORD_FRAMES = False
     MOVE_CAMERA = False
     args = get_args()
-    play(args, x_vel=0., y_vel=0., yaw_vel=0., height=0.5)
+    play(args, x_vel=0., y_vel=0., yaw_vel=0., height=1.0)
