@@ -279,7 +279,37 @@ class H12RoughCfg( LeggedRobotCfg ):
     class sim(LeggedRobotCfg.sim):
         dt = 0.002
 
-class H12RoughCfgPPO( LeggedRobotCfgPPO ):
+# class H12RoughCfgPPO( LeggedRobotCfgPPO ):
+#     class policy:
+#         init_noise_std = 0.1
+#         actor_hidden_dims = [512, 256, 256]
+#         critic_hidden_dims = [512, 256, 256]
+#         activation = 'elu' # can be elu, relu, selu, crelu, lrelu, tanh, sigmoid
+#         # only for 'ActorCriticRecurrent':
+#         # rnn_type = 'lstm'
+#         # rnn_hidden_size = 512
+#         # rnn_num_layers = 1
+#     class algorithm( LeggedRobotCfgPPO.algorithm ):
+#         use_flip = True
+#         entropy_coef = 0.01
+#         symmetry_scale = 1.0
+#     class runner( LeggedRobotCfgPPO.runner ):
+#         policy_class_name = 'HIMActorCritic'
+#         algorithm_class_name = 'HIMPPO'
+#         save_interval = 200
+#         num_steps_per_env = 50
+#         max_iterations = 100000
+#         run_name = ''
+#         experiment_name = ''
+#         wandb_project = ""
+#         # logger = "wandb"        
+#         logger = "tensorboard"        
+#         # wandb_user = "" # enter your own wandb user name here
+
+# ALMI config
+class H12RoughCfgPPO(BaseConfig):
+    seed = 1
+    runner_class_name = 'OnPolicyRunner'
     class policy:
         init_noise_std = 0.1
         actor_hidden_dims = [512, 256, 256]
@@ -289,13 +319,29 @@ class H12RoughCfgPPO( LeggedRobotCfgPPO ):
         # rnn_type = 'lstm'
         # rnn_hidden_size = 512
         # rnn_num_layers = 1
-    class algorithm( LeggedRobotCfgPPO.algorithm ):
-        use_flip = True
+        
+    class algorithm:
+        # training params
+        value_loss_coef = 1.0
+        use_clipped_value_loss = True
+        clip_param = 0.2
         entropy_coef = 0.01
-        symmetry_scale = 1.0
-    class runner( LeggedRobotCfgPPO.runner ):
-        policy_class_name = 'HIMActorCritic'
-        algorithm_class_name = 'HIMPPO'
+        num_learning_epochs = 5
+        num_mini_batches = 4 # mini batch size = num_envs*nsteps / nminibatches
+        learning_rate = 1.e-3 #5.e-4
+        schedule = 'adaptive' # could be adaptive, fixed
+        gamma = 0.99
+        lam = 0.95
+        desired_kl = 0.01
+        max_grad_norm = 1.
+
+    class runner:
+        policy_class_name = 'ActorCritic'
+        algorithm_class_name = 'PPO'
+        num_steps_per_env = 24 # per iteration
+        max_iterations = 1500 # number of policy updates
+
+        # logging
         save_interval = 200
         num_steps_per_env = 50
         max_iterations = 100000
@@ -303,5 +349,4 @@ class H12RoughCfgPPO( LeggedRobotCfgPPO ):
         experiment_name = ''
         wandb_project = ""
         # logger = "wandb"        
-        logger = "tensorboard"        
-        # wandb_user = "" # enter your own wandb user name here
+        logger = "tensorboard"      
