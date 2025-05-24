@@ -93,15 +93,15 @@ class H12RoughCfg( LeggedRobotCfg ):
                      'hip_pitch': 2.5,
                      'knee': 4.0,
                      'ankle': 2.0,
-                     "torso": 3.0,
-                     "shoulder": 2.0,
-                     "elbow": 1.0,
-                     "wrist": 1.0,
+                     "torso": 4.0,
+                     "shoulder": 3.0,
+                     "elbow": 2.0,
+                     "wrist": 2.0,
                      }  # [N*m/rad]  # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
         # decimation: Number of control action updates @ sim DT per policy DT
-        decimation = 10
+        decimation = 8
         hip_reduction = 1.0
 
     class commands( LeggedRobotCfg.commands ):
@@ -140,7 +140,7 @@ class H12RoughCfg( LeggedRobotCfg ):
         hand_names = ["L_hand_base_link", "R_hand_base_link"]
         self_collision = 0
         flip_visual_attachments = False
-        ankle_sole_distance = 0.05
+        ankle_sole_distance = 0.04
         armature = 1e-3
 
         
@@ -200,7 +200,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             lin_vel_z = -0.5
             ang_vel_xy = -0.025
             orientation = -1.5
-            action_rate = -0.01
+            action_rate = -0.05
             tracking_base_height = 2.
             deviation_hip_joint = -0.2
             deviation_ankle_joint = -0.5
@@ -214,7 +214,7 @@ class H12RoughCfg( LeggedRobotCfg ):
             knee_distance_lateral = 1.0
             feet_ground_parallel = -2.0
             feet_parallel = -3.0
-            smoothness = -0.05
+            smoothness = -0.1
             joint_power = -2e-5
             feet_stumble = -1.5
             torques = -2.5e-6
@@ -239,9 +239,9 @@ class H12RoughCfg( LeggedRobotCfg ):
         soft_torque_limit = 0.95
         base_height_target = 0.95
         max_contact_force = 700.
-        least_feet_distance = 0.2
+        least_feet_distance = 0.25
         # feet_swing_height_threshold = 0.08
-        least_feet_distance_lateral = 0.2
+        least_feet_distance_lateral = 0.25
         most_feet_distance_lateral = 0.45
         most_knee_distance_lateral = 0.45
         least_knee_distance_lateral = 0.2
@@ -277,39 +277,9 @@ class H12RoughCfg( LeggedRobotCfg ):
             height_measurement = 0.1
 
     class sim(LeggedRobotCfg.sim):
-        dt = 0.002
+        dt = 0.0025
 
-# class H12RoughCfgPPO( LeggedRobotCfgPPO ):
-#     class policy:
-#         init_noise_std = 0.1
-#         actor_hidden_dims = [512, 256, 256]
-#         critic_hidden_dims = [512, 256, 256]
-#         activation = 'elu' # can be elu, relu, selu, crelu, lrelu, tanh, sigmoid
-#         # only for 'ActorCriticRecurrent':
-#         # rnn_type = 'lstm'
-#         # rnn_hidden_size = 512
-#         # rnn_num_layers = 1
-#     class algorithm( LeggedRobotCfgPPO.algorithm ):
-#         use_flip = True
-#         entropy_coef = 0.01
-#         symmetry_scale = 1.0
-#     class runner( LeggedRobotCfgPPO.runner ):
-#         policy_class_name = 'HIMActorCritic'
-#         algorithm_class_name = 'HIMPPO'
-#         save_interval = 200
-#         num_steps_per_env = 50
-#         max_iterations = 100000
-#         run_name = ''
-#         experiment_name = ''
-#         wandb_project = ""
-#         # logger = "wandb"        
-#         logger = "tensorboard"        
-#         # wandb_user = "" # enter your own wandb user name here
-
-# ALMI config
-class H12RoughCfgPPO(BaseConfig):
-    seed = 1
-    runner_class_name = 'OnPolicyRunner'
+class H12RoughCfgPPO( LeggedRobotCfgPPO ):
     class policy:
         init_noise_std = 0.1
         actor_hidden_dims = [512, 256, 256]
@@ -319,34 +289,64 @@ class H12RoughCfgPPO(BaseConfig):
         # rnn_type = 'lstm'
         # rnn_hidden_size = 512
         # rnn_num_layers = 1
-        
-    class algorithm:
-        # training params
-        value_loss_coef = 1.0
-        use_clipped_value_loss = True
-        clip_param = 0.2
+    class algorithm( LeggedRobotCfgPPO.algorithm ):
+        use_flip = True
         entropy_coef = 0.01
-        num_learning_epochs = 5
-        num_mini_batches = 4 # mini batch size = num_envs*nsteps / nminibatches
-        learning_rate = 1.e-3 #5.e-4
-        schedule = 'adaptive' # could be adaptive, fixed
-        gamma = 0.99
-        lam = 0.95
-        desired_kl = 0.01
-        max_grad_norm = 1.
-
-    class runner:
-        policy_class_name = 'ActorCritic'
-        algorithm_class_name = 'PPO'
-        num_steps_per_env = 24 # per iteration
-        max_iterations = 1500 # number of policy updates
-
-        # logging
+        symmetry_scale = 1.0
+    class runner( LeggedRobotCfgPPO.runner ):
+        policy_class_name = 'HIMActorCritic'
+        algorithm_class_name = 'HIMPPO'
         save_interval = 200
-        num_steps_per_env = 50
+        num_steps_per_env = 20
         max_iterations = 100000
         run_name = ''
         experiment_name = ''
         wandb_project = ""
         # logger = "wandb"        
-        logger = "tensorboard"      
+        logger = "tensorboard"        
+        # wandb_user = "" # enter your own wandb user name here
+
+# # ALMI config
+# class H12RoughCfgPPO(BaseConfig):
+#     seed = 1
+#     runner_class_name = 'OnPolicyRunner'
+#     class policy:
+#         init_noise_std = 0.1
+#         actor_hidden_dims = [512, 256, 256]
+#         critic_hidden_dims = [512, 256, 256]
+#         activation = 'elu' # can be elu, relu, selu, crelu, lrelu, tanh, sigmoid
+#         # only for 'ActorCriticRecurrent':
+#         # rnn_type = 'lstm'
+#         # rnn_hidden_size = 512
+#         # rnn_num_layers = 1
+        
+#     class algorithm:
+#         # training params
+#         value_loss_coef = 1.0
+#         use_clipped_value_loss = True
+#         clip_param = 0.2
+#         entropy_coef = 0.01
+#         num_learning_epochs = 5
+#         num_mini_batches = 4 # mini batch size = num_envs*nsteps / nminibatches
+#         learning_rate = 1.e-3 #5.e-4
+#         schedule = 'adaptive' # could be adaptive, fixed
+#         gamma = 0.99
+#         lam = 0.95
+#         desired_kl = 0.01
+#         max_grad_norm = 1.
+
+#     class runner:
+#         policy_class_name = 'ActorCritic'
+#         algorithm_class_name = 'PPO'
+#         num_steps_per_env = 24 # per iteration
+#         max_iterations = 1500 # number of policy updates
+
+#         # logging
+#         save_interval = 200
+#         num_steps_per_env = 50
+#         max_iterations = 100000
+#         run_name = ''
+#         experiment_name = ''
+#         wandb_project = ""
+#         # logger = "wandb"        
+#         logger = "tensorboard"      
